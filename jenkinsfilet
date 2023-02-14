@@ -6,8 +6,8 @@ retriever: modernSCM(
   ]
 )
 
-appName = "node-app-backend"
-configname= "node-app-frontend"
+appName = "node-app-backend-t"
+//configname= "node-app-frontend-t"
 
 pipeline {
     agent any
@@ -22,11 +22,11 @@ pipeline {
                 binaryBuild(buildConfigName: appName, buildFromPath: ".")
             }
         }
-        stage("Docker Build front") {
-            steps {
-                binaryBuild(buildConfigName: configname, buildFromPath: "./client")
-            }
-        }
+      //  stage("Docker Build front") {
+       //     steps {
+      //          binaryBuild(buildConfigName: configname, buildFromPath: "./client")
+     //       }
+     //   }
       stage("Tag image") {
        steps{
     tagImage([
@@ -40,7 +40,7 @@ pipeline {
     ])
       }
 }
-stage("Tag image front") {
+/*stage("Tag image front") {
        steps{
     tagImage([
             sourceImagePath: "dhanya-jenkins",
@@ -57,4 +57,4 @@ stage("Trigger Deployment Update Pipeline back"){
         steps{
           build job:'node-update-deployment' , parameters: [string(name: 'DOCKERTAG',value: env.BUILD_NUMBER)]
         }
-      }
+      }*/
