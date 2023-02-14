@@ -55,6 +55,6 @@ pipeline {
 }
 stage("Trigger Deployment Update Pipeline back"){
         steps{
-          build job:'node-update-deployment' , parameters: [string(name: 'DOCKERTAG',value: env.BUILD_NUMBER)]
+          build job:'node-update-deployment' , parameters: [string(name: 'DOCKERTAG',value: env.BUILD_NUMBER)]*/
         }
-      }*/
+      }
