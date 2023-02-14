@@ -9,7 +9,9 @@ retriever: modernSCM(
 pipeline
 {
   agent  any
-  
+  environment {
+        COMMIT_ID = sh (script: 'git rev-parse HEAD', returnStdout: true).trim()
+    }
 stages{
   stage("build")
   {
@@ -32,7 +34,7 @@ stages{
             sourceImageTag : "latest",
             toImagePath: "dhanya-jenkins",
             toImageName    : "node-gitclient",
-            toImageTag     : "${env.BUILD_NUMBER}"
+            toImageTag     : "${COMMIT_ID}"
       ])
       }
   }
@@ -63,14 +65,14 @@ stages{
             sourceImageTag : "latest",
             toImagePath: "dhanya-jenkins",
             toImageName    : "node-gitserver",
-            toImageTag     : "${env.BUILD_NUMBER}"
+            toImageTag     : "${COMMIT_ID}"
       ])
        }
   }
   
   stage("Trigger Deployment Update Pipeline back"){
         steps{
-          build job:'node-app-update-deployment-pipeline-back' , parameters: [string(name: 'DOCKERTAG',value: env.BUILD_NUMBER)]
+          build job:'node-app-update-deployment-pipeline-back' , parameters: [string(name: 'DOCKERTAG',value: env.COMMIT_ID)]
         }
       }
 //   stage('deploy') {
@@ -93,5 +95,3 @@ stages{
 //       }
  }
  }
-  
-        
