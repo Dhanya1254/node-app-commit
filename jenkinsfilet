@@ -1,0 +1,60 @@
+library identifier: "pipeline-library@v1.5",
+retriever: modernSCM(
+  [
+    $class: "GitSCMSource",
+    remote: "https://github.com/redhat-cop/pipeline-library.git" 
+  ]
+)
+
+appName = "node-app-backend"
+configname= "node-app-frontend"
+
+pipeline {
+    agent any
+    stages {
+        stage("Checkout") {
+            steps {
+                checkout scm
+            }
+        }
+        stage("Docker Build") {
+            steps {
+                binaryBuild(buildConfigName: appName, buildFromPath: ".")
+            }
+        }
+        stage("Docker Build front") {
+            steps {
+                binaryBuild(buildConfigName: configname, buildFromPath: "./client")
+            }
+        }
+      stage("Tag image") {
+       steps{
+    tagImage([
+            sourceImagePath: "dhanya-jenkins",
+            sourceImageName: "node-server",
+            sourceImageTag : "latest",
+            toImagePath: "dhanya-jenkins",
+            toImageName    : "node-server",
+            toImageTag     : "${env.BUILD_NUMBER}"
+      
+    ])
+      }
+}
+stage("Tag image front") {
+       steps{
+    tagImage([
+            sourceImagePath: "dhanya-jenkins",
+            sourceImageName: "node-client",
+            sourceImageTag : "latest",
+            toImagePath: "dhanya-jenkins",
+            toImageName    : "node-client",
+            toImageTag     : "${env.BUILD_NUMBER}"
+      
+    ])
+      }
+}
+stage("Trigger Deployment Update Pipeline back"){
+        steps{
+          build job:'node-update-deployment' , parameters: [string(name: 'DOCKERTAG',value: env.BUILD_NUMBER)]
+        }
+      }
