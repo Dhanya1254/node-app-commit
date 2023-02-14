@@ -73,7 +73,7 @@ stages{
   stage("Trigger Deployment Update Pipeline back"){
         steps{
           build job:'node-app-update' , parameters: [string(name: 'DOCKERTAG',value: env.COMMIT_ID)]
-        }
+       }
       }
 //   stage('deploy') {
 //         steps {
