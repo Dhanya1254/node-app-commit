@@ -10,7 +10,7 @@ pipeline
 {
   agent  any
   environment {
-        COMMIT_ID = sh (script: 'git rev-parse HEAD', returnStdout: true).trim().substring(0,5)
+        COMMIT_ID = sh (script: 'git rev-parse HEAD', returnStdout: true).substring(0,5)
     }
 stages{
   stage("build")
