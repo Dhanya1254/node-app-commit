@@ -36,7 +36,7 @@ stages{
             toImageName    : "node-gitclient",
             toImageTag     : "${COMMIT_ID}"
       ])
-     }
+      }
   }
 //   stage("Trigger Deployment Update Pipeline "){
 //         steps{
