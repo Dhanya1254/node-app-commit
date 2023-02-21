@@ -68,7 +68,7 @@ stages{
             toImageTag     : "${COMMIT_ID}"
       ])
        }
-  }
+ }
   
   stage("Trigger Deployment Update Pipeline back"){
         steps{
