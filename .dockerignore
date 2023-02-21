@@ -1,6 +1,5 @@
 node_modules
 README.md 
-client
 deployment.yaml
 mongo.yaml 
 .gitignore
